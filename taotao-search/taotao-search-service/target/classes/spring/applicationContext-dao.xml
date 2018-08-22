@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--加载配置文件-->
+    <context:property-placeholder location = "classpath:properties/*.properties" />
+
+    <!--数据库连接池-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <!--连接池最大数据库连接数量-->
+        <property name="maxActive" value="10" />
+        <!--最大空闲数-->
+        <property name="minIdle" value="5" />
+    </bean>
+
+    <!--SqlSessionFactory配置-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--数据源-->
+        <property name="dataSource" ref="dataSource" />
+        <!--加载Mybatis核心配置文件-->
+        <property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" />
+        <!--配置别名包扫描-->
+        <property name="typeAliasesPackage" value="com.taotao.pojo"/>
+    </bean>
+
+
+    <!-- 动态代理，第二种方式：包扫描（推荐）： -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- basePackage多个包用","分隔 -->
+        <property name="basePackage" value="com.taotao.search.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+</beans>

@@ -1,0 +1,5 @@
+/Users/hunson/IdeaProjects/taotao/taotao-sso/taotao-sso-service/src/main/java/com/taotao/sso/jedis/JedisClient.java
+/Users/hunson/IdeaProjects/taotao/taotao-sso/taotao-sso-service/src/main/java/com/taotao/sso/jedis/JedisClientPool.java
+/Users/hunson/IdeaProjects/taotao/taotao-sso/taotao-sso-service/src/main/java/com/taotao/sso/service/impl/UserLoginServiceImpl.java
+/Users/hunson/IdeaProjects/taotao/taotao-sso/taotao-sso-service/src/main/java/com/taotao/sso/service/impl/UserRegisterServiceImpl.java
+/Users/hunson/IdeaProjects/taotao/taotao-sso/taotao-sso-service/src/main/java/com/taotao/sso/jedis/JedisClientCluster.java

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.taotao.activemq"/>
+
+
+    <bean id="targetConnection" class="org.apache.activemq.ActiveMQConnectionFactory" >
+        <property name="brokerURL" value="tcp://192.168.31.134:61616"/>
+    </bean>
+    <!--通用的 connectionFactory ，指定真正使用的连接工厂-->
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="targetConnection"/>
+    </bean>
+
+
+    <!-- Spring JmsTemplate 的消息生产者 start-->
+
+    <!-- 定义JmsTemplate的Queue类型 -->
+    <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+        <constructor-arg ref="connectionFactory" />
+        <!-- 非pub/sub模型（发布/订阅），即队列模式 -->
+        <property name="pubSubDomain" value="false" />
+    </bean>
+
+    <!-- 定义JmsTemplate的Topic类型 -->
+    <bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+        <constructor-arg ref="connectionFactory" />
+        <!-- pub/sub模型（发布/订阅） -->
+        <property name="pubSubDomain" value="true" />
+    </bean>
+
+    <!--Spring JmsTemplate 的消息生产者 end-->
+
+
+
+
+    <!-- 定义队列目的地 ，点对点 -->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>queue</value>
+        </constructor-arg>
+    </bean>
+    <!-- 定义主题目的地 -->
+    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg name="name" value="item-change-topic"/>
+    </bean>
+
+
+
+
+</beans>

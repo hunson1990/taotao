@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
+    <context:component-scan base-package="com.taotao.sso.controller" />
+
+    <!--加载配置文件-->
+    <context:property-placeholder location = "classpath:properties/*.properties" />
+
+    <!-- mvc的注解驱动, 相当于同时使用最新的处理器映射 和 处理器适配器， 对json数据响应提供支持 -->
+    <mvc:annotation-driven />
+
+    <!--静态文件配置-->
+    <!--<mvc:resources mapping="/images/**" location="/WEB-INF/images/" />-->
+    <mvc:resources mapping="/css/**" location="/css/" />
+    <mvc:resources mapping="/js/**" location="/js/" />
+    <mvc:resources mapping="/images/**" location="/images/" />
+
+    <!--视图解析器的配置-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!--引用dubbo服务-->
+    <dubbo:application name="taotao-sso-web"/>
+    <dubbo:registry address="zookeeper://192.168.31.100:2181"/>
+
+    <dubbo:reference interface="com.taotao.sso.service.UserRegisterService" id="userRegisterService" timeout="300000"/>
+    <dubbo:reference interface="com.taotao.sso.service.UserLoginService" id="userLoginServiceImpl" timeout="300000"/>
+
+</beans>

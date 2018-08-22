@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--测试方便-->
+    <context:annotation-config/>
+
+
+    <bean class="com.taotao.sso.jedis.JedisClientPool"/>
+
+    <!--单机版配置-->
+    <bean class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="192.168.31.101"/>
+        <constructor-arg name="port" value="6379"/>
+    </bean>
+
+
+
+</beans>
